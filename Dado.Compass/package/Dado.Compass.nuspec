@@ -4,6 +4,7 @@
 		<id>Dado.Compass</id>
 		<version>$version$</version>
 		<authors>roydukkey</authors>
+		<copyright>Copyright 2014 roydukkey</copyright>
 		<title>Dado.Compass</title>
 		<licenseUrl>https://raw.githubusercontent.com/roydukkey/Dado.Compass/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/roydukkey/Dado.Compass/</projectUrl>
