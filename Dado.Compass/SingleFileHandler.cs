@@ -1,7 +1,6 @@
 ﻿//-----------------------------------------------------------------------------------------------
-// Dado.Compass v0.1.0, Copyright 2013 roydukkey, 2013-04-25 (Thur, 25 April 2013).
-// Dual licensed under the MIT (http://www.roydukkey.com/mit) and
-// GPL Version 2 (http://www.roydukkey.com/gpl) licenses.
+// Dado.Compass v0.2.0, Copyright 2014 roydukkey, 2014-12-27 (Sat, 27 December 2014).
+// Released under the GPL Version 3 license (https://raw.githubusercontent.com/roydukkey/Dado.Compass/blob/master/LICENSE).
 //-----------------------------------------------------------------------------------------------
 
 namespace Dado.Compass
@@ -137,9 +136,8 @@ namespace Dado.Compass
 		{
 			context.Response.Write(
 @"/*-----------------------------------------------------------------------------------------------
-// Dado.Compass v0.1.0, Copyright 2013 roydukkey, 2013-04-25 (Thur, 25 April 2013).
-// Dual licensed under the MIT (http://www.roydukkey.com/mit) and
-// GPL Version 2 (http://www.roydukkey.com/gpl) licenses.
+// Dado.Compass v0.2.0, Copyright 2014 roydukkey, 2014-12-27 (Sat, 27 December 2014).
+// Released under the GPL Version 3 license (https://raw.githubusercontent.com/roydukkey/Dado.Compass/blob/master/LICENSE).
 //-----------------------------------------------------------------------------------------------
 //
 ");
