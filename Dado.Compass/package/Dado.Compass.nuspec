@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>Dado.Compass</id>
+		<version>$version$</version>
+		<authors>roydukkey</authors>
+		<title>Dado.Compass</title>
+		<licenseUrl>https://raw.githubusercontent.com/roydukkey/Dado.Compass/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/roydukkey/Dado.Compass/</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Provides a IHttpHandler for run-time compilation of SASS and SCSS.</description>
+		<summary>Provides a IHttpHandler for run-time compilation of SASS and SCSS.</summary>
+		<language>en-US</language>
+		<tags>Compass SASS SCSS on-demand minimal</tags>
+	</metadata>
+</package>

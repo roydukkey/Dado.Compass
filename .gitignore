@@ -7,3 +7,6 @@
 *.suo
 *.user
 *.sln.docstates
+*.snk
+*.pfk
+*.pfx

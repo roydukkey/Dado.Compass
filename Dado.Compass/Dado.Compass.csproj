@@ -30,6 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Dado.Compass.xml</DocumentationFile>
+    <KeyFile>package\roydukkey.pfx</KeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -40,17 +41,47 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="package\content\web.config.install.xdt" />
+    <None Include="package\content\web.config.uninstall.xdt" />
+    <None Include="package\tools\prePackage.ps1" />
+    <None Include="package\Dado.Compass.nuspec" />
+    <None Include="package\roydukkey.pfx" />
     <Compile Include="SingleFileHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="NuGetPackage" AfterTargets="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' And '$(HasExecuted)' != 'True' ">
+    <Error Text="KeyFile parameter not spercified (/p:KeyFile=MyKey.snk)" Condition=" '$(KeyFile)' == '' " />
+
+		<PropertyGroup>
+			<!-- Use '/' for Paths. -->
+			<HasExecuted>True</HasExecuted>
+			<TargetDir>bin/$(Configuration)/</TargetDir>
+
+			<NuSpecFile>$(AssemblyName).nuspec</NuSpecFile>
+			<Source>$(ProjectDir)package/</Source>
+			<Sandbox>$(TargetDir)Nuget Package/</Sandbox>
+			<PackageTarget>$(Sandbox)Package/</PackageTarget>
+			<AssemblyTarget>$(PackageTarget)lib/net40/</AssemblyTarget>
+		</PropertyGroup>
+
+		<RemoveDir Directories="$(PackageTarget)" />
+
+		<MSBuild Projects="$(MSBuildThisFile)" Targets="Rebuild" Properties="HasExecuted=$(HasExecuted);InternalsVisibleToEnabled=false;TargetFrameworkVersion=v4.0;DebugType=None;SignAssembly=true;AssemblyOriginatorKeyFile=$(KeyFile);OutputPath=$(AssemblyTarget);DocumentationFile=$(AssemblyTarget)$(AssemblyName).xml;Configuration=$(Configuration)" BuildInParallel="$(BuildInParallel)" />
+
+		<GetAssemblyIdentity AssemblyFiles="$(AssemblyTarget)$(AssemblyName).dll">
+			<Output TaskParameter="Assemblies" ItemName="Targets" />
+		</GetAssemblyIdentity>
+
+		<Exec Command="powershell -ExecutionPolicy ByPass -file &quot;$(Source)tools\prePackage.ps1&quot; &quot;$(Source)&quot; &quot;$(PackageTarget)&quot; &quot;$(NuSpecFile)&quot; &quot;@(Targets)&quot;" LogStandardErrorAsError="true" />
+
+		<Exec Command="nuget pack &quot;$(Sandbox)$(NuSpecFile)&quot; -Version @(Targets->'%(Version)') -BasePath &quot;$(PackageTarget)&quot; -OutputDirectory &quot;$(TargetDir)&quot;" LogStandardErrorAsError="true" />
+  </Target>
 </Project>

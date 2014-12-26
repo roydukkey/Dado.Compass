@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <system.web>
+		<httpHandlers>
+			<add xdt:Locator="Condition(contains(@type, 'Dado.Compass.SingleFileHandler'))" xdt:Transform="RemoveAll" />
+		</httpHandlers>
+  </system.web>
+
+	<system.webServer>
+		<handlers>
+			<add xdt:Locator="Condition(contains(@type, 'Dado.Compass.SingleFileHandler'))" xdt:Transform="RemoveAll" />
+		</handlers>
+	</system.webServer>
+</configuration>
