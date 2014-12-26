@@ -5,7 +5,7 @@
 		<version>$version$</version>
 		<authors>roydukkey</authors>
 		<title>Dado.Compass</title>
-		<licenseUrl>https://raw.githubusercontent.com/roydukkey/Dado.Compass/blob/master/LICENSE</licenseUrl>
+		<licenseUrl>https://raw.githubusercontent.com/roydukkey/Dado.Compass/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/roydukkey/Dado.Compass/</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Provides a IHttpHandler for run-time compilation of SASS and SCSS.</description>
