@@ -56,14 +56,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="VerifyKeyFile" AfterTargets="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' And '$(HasExecuted)' != 'True' ">
-		<Warning Text="BuildNuGetPackage: Key file not found '$(KeyFile)'." Condition=" !Exists($(KeyFile)) " />
-		<CallTarget Targets="BuildNuGetPackage" Condition=" Exists($(KeyFile)) " />
-  </Target>
-  <Target Name="BuildNuGetPackage">
+	<Target Name="VerifyKeyFile" AfterTargets="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' And '$(HasExecuted)' != 'True' ">
 		<PropertyGroup>
 			<!-- Use '/' for Paths. -->
-			<HasExecuted>True</HasExecuted>
 			<TargetDir>bin/$(Configuration)/</TargetDir>
 
 			<NuSpecFile>$(AssemblyName).nuspec</NuSpecFile>
@@ -73,16 +68,30 @@
 			<AssemblyTarget>$(PackageTarget)lib/net40/</AssemblyTarget>
 		</PropertyGroup>
 
-		<RemoveDir Directories="$(PackageTarget)" />
+		<!-- Clean up from previous builds -->
+		<ItemGroup>
+			<CleanPackage Include="$(TargetDir)$(AssemblyName)*.nupkg"/>
+		</ItemGroup>
+		<Delete Files="%(CleanPackage.FullPath)" />
+		<RemoveDir Directories="$(Sandbox)" />
 
-		<MSBuild Projects="$(MSBuildThisFile)" Targets="Rebuild" Properties="HasExecuted=$(HasExecuted);InternalsVisibleToEnabled=false;TargetFrameworkVersion=v4.0;DebugType=None;SignAssembly=true;AssemblyOriginatorKeyFile=$(KeyFile);OutputPath=$(AssemblyTarget);DocumentationFile=$(AssemblyTarget)$(AssemblyName).xml;Configuration=$(Configuration)" BuildInParallel="$(BuildInParallel)" />
+		<!-- Verify KeyFile -->
+		<Warning Text="BuildNuGetPackage: Key file not found '$(KeyFile)'." Condition=" !Exists($(KeyFile)) " />
+	</Target>
 
+	<Target Name="BuildNuGetPackage" AfterTargets="VerifyKeyFile" Condition=" Exists($(KeyFile)) And '$(HasExecuted)' != 'True' ">
+		<!-- Rebuild with Signing -->
+		<MSBuild Projects="$(MSBuildThisFile)" Targets="Rebuild" Properties="HasExecuted=True;InternalsVisibleToEnabled=false;TargetFrameworkVersion=v4.0;DebugType=None;SignAssembly=true;AssemblyOriginatorKeyFile=$(KeyFile);OutputPath=$(AssemblyTarget);DocumentationFile=$(AssemblyTarget)$(AssemblyName).xml;Configuration=$(Configuration)" BuildInParallel="$(BuildInParallel)" />
+
+		<!-- Get Assembly for Version -->
 		<GetAssemblyIdentity AssemblyFiles="$(AssemblyTarget)$(AssemblyName).dll">
 			<Output TaskParameter="Assemblies" ItemName="Targets" />
 		</GetAssemblyIdentity>
 
+		<!-- Final preparation for packing -->
 		<Exec Command="powershell -ExecutionPolicy ByPass -file &quot;$(Source)tools\prePackage.ps1&quot; &quot;$(Source)&quot; &quot;$(PackageTarget)&quot; &quot;$(NuSpecFile)&quot; &quot;@(Targets)&quot;" LogStandardErrorAsError="true" />
 
+		<!-- Build Package -->
 		<Exec Command="nuget pack &quot;$(Sandbox)$(NuSpecFile)&quot; -Version @(Targets->'%(Version)') -BasePath &quot;$(PackageTarget)&quot; -OutputDirectory &quot;$(TargetDir)&quot;" LogStandardErrorAsError="true" />
-  </Target>
+	</Target>
 </Project>
