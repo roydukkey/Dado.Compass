@@ -45,7 +45,6 @@
     <None Include="package\content\web.config.uninstall.xdt" />
     <None Include="package\tools\prePackage.ps1" />
     <None Include="package\Dado.Compass.nuspec" />
-    <None Include="package\roydukkey.pfx" />
     <Compile Include="SingleFileHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,9 +56,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="NuGetPackage" AfterTargets="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' And '$(HasExecuted)' != 'True' ">
-    <Error Text="KeyFile parameter not spercified (/p:KeyFile=MyKey.snk)" Condition=" '$(KeyFile)' == '' " />
-
+  <Target Name="VerifyKeyFile" AfterTargets="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' And '$(HasExecuted)' != 'True' ">
+		<Warning Text="BuildNuGetPackage: Key file not found '$(KeyFile)'." Condition=" !Exists($(KeyFile)) " />
+		<CallTarget Targets="BuildNuGetPackage" Condition=" Exists($(KeyFile)) " />
+  </Target>
+  <Target Name="BuildNuGetPackage">
 		<PropertyGroup>
 			<!-- Use '/' for Paths. -->
 			<HasExecuted>True</HasExecuted>
