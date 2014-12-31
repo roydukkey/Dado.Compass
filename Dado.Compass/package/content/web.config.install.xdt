@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
-  <system.web>
-		<httpHandlers>
+	<system.web xdt:Transform="InsertIfMissing">
+		<httpHandlers xdt:Transform="InsertIfMissing">
 			<add verb="GET,HEAD" path="*.sass" type="Dado.Compass.SingleFileHandler, $StrongAssemblyReference$" xdt:Locator="Match(path)" xdt:Transform="InsertIfMissing" />
 			<add verb="GET,HEAD" path="*.scss" type="Dado.Compass.SingleFileHandler, $StrongAssemblyReference$" xdt:Locator="Match(path)" xdt:Transform="InsertIfMissing" />
 		</httpHandlers>
   </system.web>
 
-	<system.webServer>
-		<handlers>
+	<system.webServer xdt:Transform="InsertIfMissing">
+		<handlers xdt:Transform="InsertIfMissing">
 			<add name="CompassSASS" verb="GET,HEAD" path="*.sass" type="Dado.Compass.SingleFileHandler, $StrongAssemblyReference$" resourceType="File" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
 			<add name="CompassSCSS" verb="GET,HEAD" path="*.scss" type="Dado.Compass.SingleFileHandler, $StrongAssemblyReference$" resourceType="File" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
 		</handlers>
