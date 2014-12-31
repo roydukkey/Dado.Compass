@@ -1,4 +1,4 @@
-Dado.Compass v0.2.0
+Dado.Compass v0.2.1
 ===============
 
 Provides a IHttpHandler for run-time compilation of SASS and SCSS.
