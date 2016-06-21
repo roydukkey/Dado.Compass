@@ -1,3 +1,5 @@
+I have no plans to continue maintain this repo.
+
 Dado.Compass v0.2.1
 ===============
 
